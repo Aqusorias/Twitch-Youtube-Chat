@@ -32,7 +32,7 @@ MESSAGE_RATE = 0.2
 
 # If you have a lot of messages, you can for example put in 10, so it will only process the first 10 messages of the queue/batch.
 # This won't be a problem if you aren't getting a lot of messages, so just leave it on 50.
-MAX_QUEUE_LENGTH = 50
+MAX_QUEUE_LENGTH = 100
 
 
 

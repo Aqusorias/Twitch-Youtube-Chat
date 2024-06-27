@@ -1,5 +1,6 @@
 import concurrent.futures
 import time
+from colorama import Fore, Back, Style, init 
 import sys
 import keyboard         # killswitch
 import Youtube-TwitchChat
@@ -43,10 +44,14 @@ active_tasks = []
 
 # Countdown before the bot starts
 countdown = 2
-while countdown > 0:
-    print(countdown)
-    countdown -= 1
-    time.sleep(1)
+print(' ')
+if countdown != 0:
+    print('Starting countdown ...')
+    while countdown > 0:
+        print(countdown)
+        countdown -= 1
+        time.sleep(1)
+    print(' ')
 
 
 

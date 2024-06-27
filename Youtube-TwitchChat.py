@@ -3,11 +3,14 @@ import re
 import time
 import json
 import concurrent.futures
+from colorama import Fore, init
 import traceback
 import socket
 import random
 
 
+
+init(autoreset=True)
 
 class Twitch:
     re_prog = None
@@ -18,7 +21,8 @@ class Twitch:
     login_timestamp = 0
 
     def twitch_connect(self, channel):
-        if self.sock: self.sock.close()
+        if self.sock: 
+            self.sock.close()
         self.sock = None
         self.partial = b''
         self.login_ok = False
@@ -26,13 +30,14 @@ class Twitch:
 
         self.re_prog = re.compile(b'^(?::(?:([^ !\r\n]+)![^ \r\n]*|[^ \r\n]*) )?([^ \r\n]+)(?: ([^:\r\n]*))?(?: :([^\r\n]*))?\r\n', re.MULTILINE)
 
-        print('Connecting to Twitch...')
+        print(Fore.CYAN + 'Connecting to Twitch...')
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         self.sock.connect(('irc.chat.twitch.tv', 6667))
 
         user = 'justinfan%i' % random.randint(10000, 99999)
-        print('Connected to Twitch. Logging in anonymously as ' + user + ' ...')
+        print(Fore.GREEN + 'Successfully connected to Twitch.')
+        print(Fore.CYAN + 'Logging in anonymously as ' + Fore.BLUE + user + Fore.GREEN + ' ...')
         self.sock.send(('PASS asdf\r\nNICK %s\r\n' % user).encode())
 
         self.sock.settimeout(1.0/60.0)
@@ -52,7 +57,7 @@ class Twitch:
             except socket.timeout:
                 break
             if not received:
-                print('Connection closed by Twitch. Reconnecting in 5 seconds...')
+                print(Fore.RED + 'Connection closed by Twitch. Reconnecting in 5 seconds...')
                 self.reconnect(5)
                 return []
             buffer += received
@@ -83,7 +88,7 @@ class Twitch:
 
         return []
 
-    def receive_messages(self):
+    def twitch_receive_messages(self):
         privmsgs = []
         for irc_message in self.receive_and_parse_data():
             cmd = irc_message['command']
@@ -95,15 +100,17 @@ class Twitch:
             elif cmd == 'PING':
                 self.sock.send(b'PONG :tmi.twitch.tv\r\n')
             elif cmd == '001':
-                print('Successfully logged in. Joining channel %s.' % self.channel)
+                print(Fore.GREEN + 'Successfully logged in.')
+                print(Fore.CYAN + 'Joining channel ' + Fore.BLUE + "%s." % self.channel)
                 self.sock.send(('JOIN #%s\r\n' % self.channel).encode())
                 self.login_ok = True
             elif cmd == 'JOIN':
-                print('Successfully joined channel %s' % irc_message['params'][0])
+                print(Fore.GREEN + 'Successfully joined channel ' + Fore.BLUE + '%s' % irc_message['params'][0].lstrip('#'))
+                print(' ')
 
         if not self.login_ok:
             if time.time() - self.login_timestamp > 10:
-                print('No response from Twitch. Reconnecting...')
+                print(Fore.RED + 'No response from Twitch. Reconnecting...')
                 self.reconnect(0)
                 return []
 

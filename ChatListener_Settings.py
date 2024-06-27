@@ -7,7 +7,11 @@ import Youtube-TwitchChat
 
 
 # Replace this with your Twitch username, if you have problems, try using the username in lowercase
-TWITCH_CHANNEL = 'AqusoriasYuki' 
+TWITCH_CHANNEL = 'AqusoriasYuki'
+
+
+# If you want to get the User ID, set this to True, otherwise leave it on False.
+GetUserID = True
 
 
 # Replace this with your Youtube's Channel ID
@@ -41,6 +45,35 @@ last_time = time.time()
 message_queue = []
 thread_pool = concurrent.futures.ThreadPoolExecutor(max_workers=os.cpu_count())
 active_tasks = []
+
+
+if GetUserID == True:
+    if CLIENT_ID == None or CLIENT_SECRET == None or oauth_token == None:
+        if CLIENT_ID == None:
+            print(Fore.RED + 'Client ID is missing in the environment variables.')
+            
+        if CLIENT_SECRET == None:
+            print(Fore.RED + 'Client Secret is missing in the environment variables.')
+            
+        if oauth_token == None:
+            print(Fore.RED + 'OAuth Token is missing in the environment variables.')
+            
+        print(Fore.YELLOW + 'Please set the environment variables for the script to work properly. Remember that after setting up the environment variables, you need to restart your editor.')
+        print(' ')
+        print('\033[1m' + Back.YELLOW + Fore.RED + 'Program ended' + '\033[0m')
+        print(' ')
+        exit()
+    else:
+        print(Fore.GREEN + 'Client ID: ' + Fore.BLUE + f'{CLIENT_ID[:5]}.......{CLIENT_ID[-3:]}', Fore.GREEN + 'Client Secret: ' + Fore.BLUE + f'{CLIENT_SECRET[:5]}.......{CLIENT_SECRET[-3:]}', Fore.GREEN + 'OAuth Token: ' + Fore.BLUE + f'{oauth_token[:5]}.......{oauth_token[-3:]}', sep='\n')
+
+
+            # If you are logging and want to see your full hidden tokens, remove the 3 comments before the print.
+            # BE AWARE: DON'T DO THIS IF YOU STREAM OR RECORD! EVERYBODY THAT IS ABLE TO SEE YOUR SCREEN WILL KNOW YOUR TOKENS!!
+            
+        # # # print(Fore.GREEN + 'Client ID: ' + Fore.BLUE + f'{CLIENT_ID}', Fore.GREEN + 'Client Secret: ' + Fore.BLUE + f'{CLIENT_SECRET}', Fore.GREEN + 'OAuth Token: ' + Fore.BLUE + f'{oauth_token}', sep='\n')
+
+
+
 
 # Countdown before the bot starts
 countdown = 2

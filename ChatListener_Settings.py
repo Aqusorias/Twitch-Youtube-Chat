@@ -2,8 +2,7 @@ import concurrent.futures
 import time
 import sys
 import keyboard         # killswitch
-import TwitchChat
-import YoutubeChat
+import Youtube-TwitchChat
 
 
 # Replace this with your Twitch username, if you have problems, try using the username in lowercase
@@ -53,10 +52,10 @@ while countdown > 0:
 
 
 
-twitch_chat = TwitchChat.Twitch()
+twitch_chat = Youtube-TwitchChat.Twitch()
 twitch_chat.twitch_connect(TWITCH_CHANNEL)
 
-youtube_chat = YoutubeChat.YouTube()
+youtube_chat = Youtube-TwitchChat.YouTube()
 youtube_chat.youtube_connect(YOUTUBE_CHANNEL_ID, YOUTUBE_STREAM_URL)
 
 

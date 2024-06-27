@@ -1,6 +1,6 @@
 import concurrent.futures
 import time
-from colorama import Fore, Back, Style, init 
+from colorama import Fore, Back, Style, init            # colorization for the logging
 import sys
 import keyboard         # killswitch
 import Youtube-TwitchChat
